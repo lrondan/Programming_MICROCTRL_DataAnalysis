@@ -1,5 +1,6 @@
 # panel_0/views.py
 from django.shortcuts import render, get_object_or_404
+from .utils import guardar_datos_thingspeak
 from .models import Dispositivo
 import requests
 from django.utils import timezone
@@ -159,6 +160,7 @@ def dashboard_iot(request):
 def home(request):
     dispositivos = Dispositivo.objects.all().order_by('nombre')
     for d in dispositivos:
+        guardar_datos_thingspeak(d)
         d.actualizar_estado()
     return render(request, 'panel_0/home.html', {
         'dispositivos': dispositivos
@@ -166,6 +168,8 @@ def home(request):
 
 def device_detail(request, device_id):
     d = get_object_or_404(Dispositivo, id=device_id)
+    guardar_datos_thingspeak(d)
+    d.actualizar_estado()
     print(f"Detalle de: {d.nombre} (Channel: {d.thingspeak_channel})")
 
     campos = []
