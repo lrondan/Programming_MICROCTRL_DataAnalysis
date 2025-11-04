@@ -21,4 +21,5 @@ from panel_0 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('panel_0.urls')),
+    path('', include('analisis.urls')),
 ]

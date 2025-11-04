@@ -5,6 +5,61 @@ import requests
 from django.utils import timezone
 from datetime import datetime
 import pytz
+from analisis.models import Lectura
+from django.utils import timezone
+
+
+def device_detail(request, device_id):
+    d = get_object_or_404(Dispositivo, id=device_id)
+    campos = []
+
+    if d.thingspeak_channel:
+        try:
+            url = f"https://api.thingspeak.com/channels/{d.thingspeak_channel}/feeds.json?results=1"
+            response = requests.get(url, timeout=15)
+            if response.status_code == 200:
+                feed = response.json()['feeds'][0]
+                created_at = feed.get('created_at')
+                ts = timezone.now()
+                if created_at:
+                    from datetime import datetime
+                    import pytz
+                    ts = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.UTC)
+
+                for i in range(1, 9):
+                    field_key = f'field{i}'
+                    if feed.get(field_key):
+                        valor = float(feed[field_key])
+                        label = getattr(d, f'label{i}', f'Field {i}')
+                        unidad = getattr(d, f'unidad{i}', '')
+
+                        # GUARDAR EN BASE DE DATOS
+                        Lectura.objects.update_or_create(
+                            dispositivo=d,
+                            campo=field_key,
+                            timestamp=ts,
+                            defaults={'valor': valor}
+                        )
+
+                        campos.append({
+                            'num': i,
+                            'valor': valor,
+                            'label': label,
+                            'unidad': unidad,
+                        })
+                        setattr(d, f'valor{i}', valor)
+
+                d.ultimo_dato = ts
+                d.save()
+        except Exception as e:
+            print(f"Error: {e}")
+
+    d.actualizar_estado()
+
+    return render(request, 'panel_0/dashboard_iot.html', {
+        'dispositivos_data': [{'dispositivo': d, 'campos': campos}]
+    })
+
 
 def dashboard_iot(request):
     print("=== INICIO DASHBOARD ===")

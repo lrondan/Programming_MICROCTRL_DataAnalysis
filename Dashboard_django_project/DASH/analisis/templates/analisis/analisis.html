@@ -1,0 +1,98 @@
+<!-- analisis/templates/analisis/analisis.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Análisis | {{ dispositivo.nombre }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { margin: 0; font-family: 'Segoe UI'; background: #f4f6f9; color: #2c3e50; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+        .header { text-align: center; padding: 20px; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: #2c3e50; }
+        .stat-label { color: #777; font-size: 0.9rem; }
+        .chart-container { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; justify-content: center; }
+        select, button { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; }
+        button { background: #007bff; color: white; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> Análisis Estadístico</h1>
+            <h2>{{ dispositivo.nombre }} → {{ label }}</h2>
+        </div>
+
+        <div class="controls">
+            <select onchange="window.location.href='?campo='+this.value+'&dias={{ dias }}'">
+                {% for c in campos_disponibles %}
+                <option value="{{ c.value }}" {% if c.value == campo %}selected{% endif %}>
+                    {{ c.label }}
+                </option>
+                {% endfor %}
+            </select>
+            <select onchange="window.location.href='?campo={{ campo }}&dias='+this.value">
+                <option value="1" {% if dias == 1 %}selected{% endif %}>Últimas 24h</option>
+                <option value="7" {% if dias == 7 %}selected{% endif %}>7 días</option>
+                <option value="30" {% if dias == 30 %}selected{% endif %}>30 días</option>
+            </select>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.promedio|floatformat:2|default:"-" }}</div>
+                <div class="stat-label">Promedio {{ unidad }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.maximo|floatformat:2|default:"-" }}</div>
+                <div class="stat-label">Máximo {{ unidad }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.minimo|floatformat:2|default:"-" }}</div>
+                <div class="stat-label">Mínimo {{ unidad }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.total }}</div>
+                <div class="stat-label">Lecturas</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        const data = {{ datos_grafico|safe }};
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: '{{ label }} ({{ unidad }})',
+                    data: data,
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { type: 'time', time: { unit: 'hour' } },
+                    y: { beginAtZero: false }
+                },
+                plugins: { tooltip: { mode: 'index', intersect: false } }
+            }
+        });
+    </script>
+</body>
+</html>
