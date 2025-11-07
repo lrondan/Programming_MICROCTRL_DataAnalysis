@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('panel_0.urls')),
     path('', include('analisis.urls')),
     path('', include('deep_analytics.urls')),
+    path('', include('about.urls')),
 ]

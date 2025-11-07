@@ -65,6 +65,6 @@ class Dispositivo(models.Model):
         return f"{self.user.username}: {self.nombre}"
 
     class Meta:
-        verbose_name = "Dispositivo ESP32"
-        verbose_name_plural = "Dispositivos ESP32"
+        verbose_name = "Dispositivo"
+        verbose_name_plural = "Dispositivos"
         unique_together = ('user', 'thingspeak_channel')

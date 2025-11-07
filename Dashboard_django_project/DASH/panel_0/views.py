@@ -1,8 +1,10 @@
 # panel_0/views.py
 from .utils import guardar_datos_thingspeak
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Dispositivo
+from .forms import DispositivoForm
+from django.contrib import messages
 
 @login_required
 def home(request):
@@ -30,3 +32,18 @@ def device_detail(request, device_id):
     return render(request, 'panel_0/dashboard_iot.html', {
         'dispositivos_data': [{'dispositivo': d, 'campos': campos}]
     })
+
+@login_required
+def agregar_dispositivo(request):
+    if request.method == 'POST':
+        form = DispositivoForm(request.POST)
+        if form.is_valid():
+            dispositivo = form.save(commit=False)
+            dispositivo.user = request.user
+            dispositivo.save()
+            messages.success(request, f'¡Dispositivo "{dispositivo.nombre}" agregado!')
+            return redirect('home')
+    else:
+        form = DispositivoForm()
+    
+    return render(request, 'panel_0/agregar_dispositivo.html', {'form': form})

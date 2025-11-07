@@ -131,4 +131,89 @@
         </div>
     {% endif %}
 </div>
+{% if user.is_authenticated %}
+<!-- Botón flotante -->
+<div class="fixed bottom-6 right-6 z-50">
+    <button onclick="openModal()" 
+            class="w-14 h-14 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 flex items-center justify-center">
+        <i class="fas fa-plus text-2xl"></i>
+    </button>
+</div>
+
+<!-- Modal -->
+<dialog id="modal-agregar" class="modal backdrop:bg-black/50">
+    <div class="modal-box w-11/12 max-w-2xl bg-white dark:bg-gray-800 rounded-xl p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">Agregar Nuevo Dispositivo</h3>
+            <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- FORMULARIO EN EL MODAL -->
+        <form method="post" action="{% url 'agregar_dispositivo' %}" class="space-y-4">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nombre</label>
+                    <input type="text" name="nombre" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500" placeholder="ESP32 Sala">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Channel ID (ThingSpeak)</label>
+                    <input type="number" name="thingspeak_channel" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500" placeholder="1234567">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Ícono</label>
+                    <select name="icono" class="w-full px-3 py-2 border rounded-lg">
+                        <option value="microchip">Microchip</option>
+                        <option value="thermometer-half">Temperatura</option>
+                        <option value="tint">Humedad</option>
+                        <option value="wind">Viento</option>
+                        <option value="lightbulb">Luz</option>
+                        <option value="bolt">Voltaje</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Campo 1</label>
+                    <input type="text" name="label1" class="w-full px-3 py-2 border rounded-lg" placeholder="Temperatura">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Unidad 1</label>
+                    <input type="text" name="unidad1" class="w-full px-3 py-2 border rounded-lg" placeholder="°C">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Campo 2</label>
+                    <input type="text" name="label2" class="w-full px-3 py-2 border rounded-lg" placeholder="Humedad">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Unidad 2</label>
+                    <input type="text" name="unidad2" class="w-full px-3 py-2 border rounded-lg" placeholder="%">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" onclick="closeModal()"
+                        class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
+                    Cancelar
+                </button>
+                <button type="submit"
+                        class="px-5 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition transform hover:scale-105">
+                    <i class="fas fa-save mr-2"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<!-- JavaScript para abrir/cerrar modal -->
+<script>
+function openModal() {
+    document.getElementById('modal-agregar').showModal();
+}
+function closeModal() {
+    document.getElementById('modal-agregar').close();
+}
+</script>
+{% endif %}
 {% endblock %}

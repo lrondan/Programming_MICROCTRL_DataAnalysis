@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'analisis',
     'auth_app',
     'deep_analytics',
+    'about',
 ]
 
 MIDDLEWARE = [
@@ -102,11 +103,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGE_CODE = 'es'  # Por defecto español
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
+LANGUAGES = [
+    ('es', 'Español'),
+    ('en', 'English'),
+]
 
-LANGUAGE_CODE = 'en-us'
+USE_I18N = True
+USE_L10N = True
 
 TIME_ZONE = 'UTC'
 
