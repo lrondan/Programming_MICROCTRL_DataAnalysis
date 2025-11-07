@@ -4,8 +4,9 @@ from .models import Dispositivo
 
 @admin.register(Dispositivo)
 class DispositivoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'thingspeak_channel', 'estado', 'ultimo_dato')
-    search_fields = ('nombre', 'thingspeak_channel')
+    list_display = ('nombre', 'user','thingspeak_channel', 'estado', 'ultimo_dato')
+    list_filter = ('user', 'estado','ultimo_dato')
+    search_fields = ('user__username', 'nombre', 'thingspeak_channel')
     fieldsets = (
         ('General', {
             'fields': ('nombre', 'icono', 'thingspeak_channel', 'mqtt_topic')

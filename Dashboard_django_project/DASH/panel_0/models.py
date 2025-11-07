@@ -1,6 +1,7 @@
 # panel_0/models.py
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Dispositivo(models.Model):
     ESTADO_CHOICES = [
@@ -9,6 +10,7 @@ class Dispositivo(models.Model):
         ('warning', 'Advertencia'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='dispositivos')
     nombre = models.CharField(max_length=100)
     icono = models.CharField(max_length=50, default='microchip')
     thingspeak_channel = models.IntegerField(unique=True, null=True, blank=True)
@@ -60,8 +62,9 @@ class Dispositivo(models.Model):
         self.save()
 
     def __str__(self):
-        return self.nombre
+        return f"{self.user.username}: {self.nombre}"
 
     class Meta:
         verbose_name = "Dispositivo ESP32"
         verbose_name_plural = "Dispositivos ESP32"
+        unique_together = ('user', 'thingspeak_channel')

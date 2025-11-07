@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from panel_0.models import Dispositivo
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -29,13 +30,18 @@ def logout_view(request):
     return redirect('login')
 
 def register_view(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Dispositivo.objects.create(
+                user=user,
+                nombre=f"Dispositivo de {user.username}",
+                thingspeak_channel=None,
+                icono="microchip",
+                label1="Temperatura",
+                unidad1="°C"
+                )
             login(request, user)
             messages.success(request, '¡Registro exitoso! Bienvenido.')
             return redirect('home')

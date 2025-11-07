@@ -1,0 +1,89 @@
+<!-- deep_analytics/templates/deep_analytics/deep_analisis.html -->
+{% extends "base.html" %}
+{% block title %}Análisis Profundo | {{ dispositivo.nombre }}{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="bg-white p-6 rounded-xl shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Análisis Profundo: {{ dispositivo.nombre }}</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <label class="block text-sm font-medium mb-2">Período:</label>
+                <select onchange="location.href='?dias='+this.value" class="p-2 border rounded">
+                    <option value="1" {% if dias == 1 %}selected{% endif %}>24 horas</option>
+                    <option value="7" {% if dias == 7 %}selected{% endif %}>7 días</option>
+                    <option value="30" {% if dias == 30 %}selected{% endif %}>30 días</option>
+                </select>
+            </div>
+        </div>
+
+        {% if error %}
+            <div class="bg-red-100 p-4 rounded text-red-800">{{ error }}</div>
+        {% endif %}
+
+        <!-- 1. CORRELACIÓN -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Correlación entre Variables</h2>
+            <div class="overflow-x-auto">
+                {{ correlacion_html|safe }}
+            </div>
+        </section>
+
+        <!-- 2. ANOMALÍAS -->
+        {% if anomalias %}
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Detección de Anomalías</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for a in anomalias %}
+                <div class="bg-yellow-100 p-4 rounded border-l-4 border-yellow-500">
+                    <h3 class="font-bold">{{ a.campo }}</h3>
+                    <p>{{ a.anomalias }} anomalías detectadas</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- 3. PREDICCIONES -->
+        {% if predicciones %}
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Predicciones (Próximo valor)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for campo, pred in predicciones.items %}
+            <div class="bg-blue-50 p-4 rounded">
+                <h3 class="font-bold">{{ campo }}</h3>
+                <p>Actual: {{ pred.actual|floatformat:2 }}</p>
+                <p>Predicción: {{ pred.prediccion|floatformat:2 }}</p>
+                <p class="text-sm text-gray-600">
+                    Tendencia: 
+                    <span class="{% if pred.tendencia == '↑' %}text-green-600{% elif pred.tendencia == '↓' %}text-red-600{% else %}text-yellow-600{% endif %} font-bold">
+                        {{ pred.tendencia }}
+                    </span>
+                </p>
+            </div>
+            {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- 4. CLUSTERING -->
+        {% if cluster_html %}
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Clustering de Variables Similares</h2>
+            <div class="bg-white p-4 rounded shadow">
+                {{ cluster_html|safe }}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- 5. GRÁFICO MULTI-VARIABLE -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Tendencias Multi-Variable</h2>
+            <div class="bg-white p-4 rounded shadow">
+                {{ grafico_html|safe }}
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

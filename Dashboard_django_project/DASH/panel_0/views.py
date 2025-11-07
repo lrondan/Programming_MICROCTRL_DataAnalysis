@@ -6,17 +6,17 @@ from .models import Dispositivo
 
 @login_required
 def home(request):
-    dispositivos = Dispositivo.objects.all().order_by('nombre')
+    dispositivos = request.user.dispositivos.all().order_by('nombre')
     for d in dispositivos:
         # GUARDAR HASTA 100 DATOS POR DISPOSITIVO
-        guardar_datos_thingspeak(d, resultados=100)
+        guardar_datos_thingspeak(d, resultados=10000)
         d.actualizar_estado()
     return render(request, 'panel_0/home.html', {'dispositivos': dispositivos})
 
 @login_required
 def device_detail(request, device_id):
-    d = get_object_or_404(Dispositivo, id=device_id)
-    guardar_datos_thingspeak(d, resultados=100)
+    d = get_object_or_404(Dispositivo, id=device_id, user=request.user)
+    guardar_datos_thingspeak(d, resultados=10000)
     d.actualizar_estado()
 
     campos = []

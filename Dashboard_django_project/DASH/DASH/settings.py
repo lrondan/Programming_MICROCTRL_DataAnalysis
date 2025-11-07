@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'panel_0',
     'analisis',
     'auth_app',
+    'deep_analytics',
 ]
 
 MIDDLEWARE = [

@@ -8,7 +8,7 @@ from datetime import timedelta
 import json
 
 def analisis_dispositivo(request, device_id):
-    dispositivo = get_object_or_404(Dispositivo, id=device_id)
+    dispositivo = get_object_or_404(Dispositivo, id=device_id, user=request.user)
     campo = request.GET.get('campo', 'field1')
     dias = int(request.GET.get('dias', 7))
 
