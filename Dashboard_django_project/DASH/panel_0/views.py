@@ -45,5 +45,15 @@ def agregar_dispositivo(request):
             return redirect('home')
     else:
         form = DispositivoForm()
-    
-    return render(request, 'panel_0/agregar_dispositivo.html', {'form': form})
+
+    return render(request, 'panel_0/add_dispositivo.html', {'form': form})
+
+@login_required
+def eliminar_dispositivo(request, device_id):
+    dispositivo = get_object_or_404(Dispositivo, id=device_id, user=request.user)
+    if request.method == 'POST':
+        nombre = dispositivo.nombre
+        dispositivo.delete()
+        messages.success(request, f'¡Dispositivo "{nombre}" eliminado correctamente!')
+        return redirect('home')
+    return render(request, 'panel_0/eliminar_dispositivo.html', {'dispositivo': dispositivo})
