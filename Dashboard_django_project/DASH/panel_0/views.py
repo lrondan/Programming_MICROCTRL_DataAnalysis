@@ -1,4 +1,5 @@
 # panel_0/views.py
+from .tasks import actualizar_dispositivo_task
 from .utils import guardar_datos_thingspeak
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -11,14 +12,14 @@ def home(request):
     dispositivos = request.user.dispositivos.all().order_by('nombre')
     for d in dispositivos:
         # GUARDAR HASTA 100 DATOS POR DISPOSITIVO
-        guardar_datos_thingspeak(d, resultados=10000)
-        d.actualizar_estado()
+        actualizar_dispositivo_task.delay(d.id)
+    messages.info(request, 'Los dispositivos se están actualizando en segundo plano.')
     return render(request, 'panel_0/home.html', {'dispositivos': dispositivos})
 
 @login_required
 def device_detail(request, device_id):
     d = get_object_or_404(Dispositivo, id=device_id, user=request.user)
-    guardar_datos_thingspeak(d, resultados=10000)
+    actualizar_dispositivo_task.delay(d.id)
     d.actualizar_estado()
 
     campos = []
