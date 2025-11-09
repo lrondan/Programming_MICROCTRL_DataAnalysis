@@ -1,60 +1,71 @@
 # panel_0/utils.py
 import requests
-from django.utils import timezone
-from datetime import datetime
-import pytz
-from analisis.models import Lectura
-from .models import Dispositivo
+from django.utils.dateparse import parse_datetime
+from .models import Dispositivo, Lectura
 
-def guardar_datos_thingspeak(dispositivo, resultados=100):
-    """
-    Guarda TODOS los feeds disponibles (hasta 'resultados')
-    """
-    if not dispositivo.thingspeak_channel:
-        return
+def guardar_datos_thingspeak(dispositivo, resultados=10):
+    if not dispositivo.thingspeak_channel or not dispositivo.thingspeak_read_key:
+        return False
+
+    url = f"https://api.thingspeak.com/channels/{dispositivo.thingspeak_channel}/feeds.json"
+    params = {
+        'api_key': dispositivo.thingspeak_read_key,
+        'results': min(resultados, 100)
+    }
 
     try:
-        # OBTENER MÚLTIPLES FEEDS
-        url = f"https://api.thingspeak.com/channels/{dispositivo.thingspeak_channel}/feeds.json?results={resultados}"
-        response = requests.get(url, timeout=20)
+        response = requests.get(url, params=params, timeout=12)
         if response.status_code != 200:
-            return
-
-        feeds = response.json().get('feeds', [])
-        if not feeds:
-            return
-
-        # GUARDAR CADA FEED
-        for feed in feeds:
-            created_at = feed.get('created_at')
-            if not created_at:
-                continue
-
-            try:
-                ts = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.UTC)
-            except:
-                continue
-
-            for i in range(1, 9):
-                field_key = f'field{i}'
-                if feed.get(field_key):
-                    try:
-                        valor = float(feed[field_key])
-                        # GUARDAR O ACTUALIZAR
-                        Lectura.objects.update_or_create(
-                            dispositivo=dispositivo,
-                            campo=field_key,
-                            timestamp=ts,
-                            defaults={'valor': valor}
-                        )
-                    except (ValueError, TypeError):
-                        continue
-
-        # Actualizar último dato
-        ultimo_feed = feeds[-1]
-        ultimo_ts = datetime.strptime(ultimo_feed['created_at'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.UTC)
-        dispositivo.ultimo_dato = ultimo_ts
-        dispositivo.save()
-
+            return False
+        data = response.json()
     except Exception as e:
-        print(f"Error al guardar datos históricos: {e}")
+        print(f"[ERROR THINGSPEAK] {e}")
+        return False
+
+    feeds = data.get('feeds', [])
+    if not feeds:
+        return False
+
+    actualizado = False
+    ultimo_dt = None
+
+    for feed in feeds:
+        created_at_str = feed.get('created_at')
+        if not created_at_str:
+            continue
+        dt = parse_datetime(created_at_str)
+        if not dt:
+            continue
+
+        # GUARDAR COMO Lectura (auto_now_add = ahora)
+        lectura = Lectura(dispositivo=dispositivo)
+        for i in range(1, 9):
+            field = f'field{i}'
+            valor = feed.get(field)
+            if valor is not None:
+                try:
+                    setattr(lectura, field, float(valor))
+                except:
+                    pass
+        lectura.save()  # creado_en se guarda automáticamente
+
+        # Actualizar último valor en Dispositivo
+        if not ultimo_dt or dt > ultimo_dt:
+            ultimo_dt = dt
+            for i in range(1, 9):
+                field = f'field{i}'
+                valor = feed.get(field)
+                if valor is not None:
+                    try:
+                        setattr(dispositivo, f'valor{i}', float(valor))
+                        actualizado = True
+                    except:
+                        pass
+
+    if ultimo_dt:
+        dispositivo.ultimo_dato = ultimo_dt
+        if actualizado:
+            dispositivo.save()
+        dispositivo.actualizar_estado()
+        return True
+    return False
