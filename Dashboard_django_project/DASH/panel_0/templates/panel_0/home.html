@@ -6,9 +6,8 @@
 {% block title %}Inicio | NR DASH {% endblock %}
 
 {% block content %}
-{% load static %}
 
-<link rel="icon" type="image/x-icon" href="{% static 'img/logo.ico' %}">
+<link rel="icon" href="{% static 'logo.ico' %}" type="image/x-icon">
 
 <body class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat py-12 px-4" 
       style="background-image: url('{% static 'img/backgnd-panel_0.png' %}');  background-attachment: fixed;">
@@ -105,21 +104,12 @@
                         </a> 
 
                         <!-- Deep AI (Análisis Profundo) -->
-                        {% if d.lecturas.exists %}
                         <a href="{% url 'deep_analisis' d.id %}"
                            class="group flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg shadow hover:shadow-md transform hover:scale-105 transition-all duration-300">
                             <i class="fas fa-brain text-lg group-hover:animate-pulse"></i>
                             <span>Deep AI</span>
                         </a>
                 
-                        {% else %}
-                        <button disabled
-                                class="flex items-center gap-2 px-3 py-2 bg-gray-400 text-white text-sm font-medium rounded-lg opacity-60 cursor-not-allowed">
-                            <i class="fas fa-ban"></i>
-                            <span>Sin datos</span>
-                        </button>
-                        {% endif %}
-
                     </div>
                 </div>
             </div>

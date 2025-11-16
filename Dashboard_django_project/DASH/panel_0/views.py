@@ -44,3 +44,9 @@ def eliminar_dispositivo(request, dispositivo_id):
         return redirect('home')
 
     return render(request, 'panel_0/eliminar_dispositivo.html', {'dispositivo': dispositivo})
+
+@login_required
+def lecturas(request, dispositivo_id):
+    dispositivo = get_object_or_404(Dispositivo, id=dispositivo_id, user=request.user)
+
+    return(request, 'deep_analisis', {'dispositivo': dispositivo})

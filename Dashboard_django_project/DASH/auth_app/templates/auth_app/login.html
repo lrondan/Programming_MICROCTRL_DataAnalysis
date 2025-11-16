@@ -1,12 +1,30 @@
 <!-- auth_app/templates/auth_app/login.html -->
-{% extends 'auth_app/base.html' %}
-{% block title %}Login | DASH IoT{% endblock %}
-
 {% block content %}
 
 {% load static %}
 
-<link rel="icon" type="image/x-icon" href="{% static 'img/logo.ico' %}">
+<!DOCTYPE html>
+<html lang="es-en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaReact Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.ico' %}">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        input {
+            @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
+        }
+        input::placeholder {
+            @apply text-gray-400;
+        }
+    </style>
+</head>
+
 
 <body class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat py-12 px-4" 
       style="background-image: url('{% static 'img/backgnd-login.jpg' %}');">

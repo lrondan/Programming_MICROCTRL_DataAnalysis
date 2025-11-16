@@ -1,4 +1,3 @@
-# deep_analytics/views.py
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
@@ -13,25 +12,24 @@ from sklearn.ensemble import IsolationForest
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from sklearn.preprocessing import StandardScaler
 
-# IMPORTAMOS SOLO DE panel_0
-from panel_0.models import Dispositivo
+# AHORA USAMOS sensors
+from panel_0.models import Dispositivo, Lectura
 from panel_0.utils import guardar_datos_thingspeak
 
 
 @login_required
 def deep_analisis(request, device_id):
-    dispositivo = get_object_or_404(Dispositivo, id=device_id, user=request.user)
+    dispositivo = get_object_or_404(Dispositivo, id=device_id)
     dias = int(request.GET.get('dias', 7))
     desde = timezone.now() - timedelta(days=dias)
 
     # 1. FORZAR ACTUALIZACIÓN
     guardar_datos_thingspeak(dispositivo, resultados=500)
 
-    # 2. OBTENER TODAS LAS LECTURAS DEL RANGO
-    lecturas = dispositivo.panel_lecturas.filter(
-        creado_en__gte=desde
-    ).order_by('creado_en')
+    # 2. OBTENER LECTURAS
+    lecturas = dispositivo.panel_lecturas.filter(creado_en__gte=desde).order_by('creado_en')
 
     if not lecturas.exists():
         return render(request, 'deep_analytics/deep_analytics.html', {
@@ -40,7 +38,7 @@ def deep_analisis(request, device_id):
             'dias': dias,
         })
 
-    # 3. CONSTRUIR DATAFRAME: una fila por timestamp, una columna por field1..field8
+    # 3. CONSTRUIR DATAFRAME
     data = {}
     for lectura in lecturas:
         ts = lectura.creado_en.strftime('%Y-%m-%d %H:%M:%S')
@@ -65,7 +63,7 @@ def deep_analisis(request, device_id):
     correlacion = df.corr()
     correlacion_html = correlacion.to_html(classes='table table-striped', float_format='%.3f')
 
-    # 5. ANOMALÍAS (Isolation Forest por campo)
+    # 5. ANOMALÍAS
     anomalias = []
     for campo in df.columns:
         serie = df[campo].dropna()
@@ -81,7 +79,7 @@ def deep_analisis(request, device_id):
                     'porcentaje': round(anomalias_count / len(serie) * 100, 1)
                 })
 
-    # 6. PREDICCIÓN LINEAL SIMPLE
+    # 6. PREDICCIÓN LINEAL
     predicciones = {}
     for campo in df.columns:
         serie = df[campo].dropna()
@@ -101,7 +99,8 @@ def deep_analisis(request, device_id):
                 'prediccion': round(next_val, 2),
                 'tendencia': tendencia
             }
-    # 7. CLUSTERING (CORREGIDO DEFINITIVO)
+
+    # 7. CLUSTERING
     cluster_html = None
     if len(df.columns) >= 2:
         df_clean = df.dropna()
@@ -112,12 +111,11 @@ def deep_analisis(request, device_id):
             kmeans = KMeans(n_clusters=n_clusters, random_state=42)
             clusters = kmeans.fit_predict(X_scaled)
 
-            # RESETEAR ÍNDICE Y RENOMBRAR A 'creado_en'
             df_plot = df_clean.reset_index().rename(columns={'index': 'creado_en'})
 
             fig_cluster = px.scatter(
                 df_plot,
-                x=df_clean.columns[0], 
+                x=df_clean.columns[0],
                 y=df_clean.columns[1],
                 color=clusters.astype(str),
                 title='Clustering de Variables (K-Means)',
@@ -125,7 +123,7 @@ def deep_analisis(request, device_id):
                     df_clean.columns[0]: getattr(dispositivo, f'label{df_clean.columns[0][-1]}', df_clean.columns[0]),
                     df_clean.columns[1]: getattr(dispositivo, f'label{df_clean.columns[1][-1]}', df_clean.columns[1])
                 },
-                hover_data={'creado_en': True}  # ← AHORA SÍ EXISTE
+                hover_data={'creado_en': True}
             )
             cluster_html = fig_cluster.to_html(full_html=False)
 
@@ -149,7 +147,7 @@ def deep_analisis(request, device_id):
     grafico_html = fig.to_html(full_html=False)
 
     # 9. RENDER
-    return render(request, 'deep_analytics/deep_analytics.html', {
+    return render(request, 'deep_analytics/deep_analisis.html', {
         'dispositivo': dispositivo,
         'correlacion_html': correlacion_html,
         'anomalias': anomalias,
