@@ -1,0 +1,1020 @@
+[
+    {
+        "id": "0469a9e0eec0381a",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ffb70b5a6b9856d0",
+        "type": "tcp request",
+        "z": "0469a9e0eec0381a",
+        "name": "Conectar a Arduino",
+        "server": "192.168.14.40",
+        "port": "1880",
+        "out": "sit",
+        "ret": "string",
+        "splitc": "5000",
+        "newline": "",
+        "trim": false,
+        "tls": "",
+        "x": 170,
+        "y": 140,
+        "wires": [
+            [
+                "71d69411b162b0ca",
+                "f508ee6a6035515f"
+            ]
+        ]
+    },
+    {
+        "id": "ec9adbb2f0dbf904",
+        "type": "inject",
+        "z": "0469a9e0eec0381a",
+        "name": "Iniciar conexión",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "ffb70b5a6b9856d0"
+            ]
+        ]
+    },
+    {
+        "id": "71d69411b162b0ca",
+        "type": "json",
+        "z": "0469a9e0eec0381a",
+        "name": "Parsear",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 380,
+        "y": 100,
+        "wires": [
+            [
+                "f508ee6a6035515f",
+                "86c65ced4bcda5ab",
+                "095b0e9afdc3bb58",
+                "4555f75edac27cdd",
+                "195055d82480f376",
+                "129f392009fc790d",
+                "ae2c723d30d75e3b",
+                "0bcafec10e8dddbc",
+                "3c1147a28ab839ab",
+                "6af9e0761b62c805",
+                "e6d2c4e708ff2a69",
+                "87402db330f51b54"
+            ]
+        ]
+    },
+    {
+        "id": "f508ee6a6035515f",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 370,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "095b0e9afdc3bb58",
+        "type": "ui_gauge",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "c0ee948d4969bf7b",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "*C",
+        "format": "{{payload.H}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#293d29",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 680,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "86c65ced4bcda5ab",
+        "type": "ui_gauge",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "c0ee948d4969bf7b",
+        "order": 1,
+        "width": 6,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Room Temperature",
+        "label": "*C",
+        "format": "{{payload.T0}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 710,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "3d339f9167cf8f0b",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 930,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4555f75edac27cdd",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "temparature1",
+        "func": "msg.payload = msg.payload.T0 || msg.payload.temp1 || 0;\nmsg.topic = \"Room Temperature\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 220,
+        "wires": [
+            [
+                "3d339f9167cf8f0b",
+                "dc514cb52f78f0bb"
+            ]
+        ]
+    },
+    {
+        "id": "195055d82480f376",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "Room humidity",
+        "func": "msg.payload = msg.payload.H || msg.payload.hum || 1;\nmsg.topic = \"Room Humidity\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 280,
+        "wires": [
+            [
+                "3d339f9167cf8f0b"
+            ]
+        ]
+    },
+    {
+        "id": "129f392009fc790d",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "temperature 2",
+        "func": "msg.payload = msg.payload.T1 || msg.payload.temperature2 || 0;\nmsg.topic = \"Temperature 2\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 200,
+        "wires": [
+            [
+                "c65326146a229a36",
+                "dc514cb52f78f0bb",
+                "50c5d7378355ab12"
+            ]
+        ]
+    },
+    {
+        "id": "c65326146a229a36",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "dc514cb52f78f0bb",
+        "type": "ui_chart",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "10ef77e77336bd2f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Room temperature vs Temperature 2",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "No data...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "10000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#f21c32",
+            "#056bf0",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1110,
+        "y": 300,
+        "wires": [
+            []
+        ],
+        "inputLabels": [
+            "{{payload.t1}}"
+        ]
+    },
+    {
+        "id": "ae2c723d30d75e3b",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "ammonia",
+        "func": "msg.payload = msg.payload.NH3 || msg.payload.ammonia || 0;\nmsg.topic = \"ammonia\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 360,
+        "wires": [
+            [
+                "9f31330dd52e8896"
+            ]
+        ]
+    },
+    {
+        "id": "0bcafec10e8dddbc",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "H2S",
+        "func": "msg.payload = msg.payload.H2S || msg.payload.H2S || 0;\nmsg.topic = \"H2S\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 420,
+        "wires": [
+            [
+                "d88b4809f72350b5"
+            ]
+        ]
+    },
+    {
+        "id": "3c1147a28ab839ab",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "FAN Status",
+        "func": "msg.payload = msg.payload.FP || msg.payload.fan || 0;\nmsg.topic = \"Fan\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 480,
+        "wires": [
+            [
+                "c9f37fc22742f2a7"
+            ]
+        ]
+    },
+    {
+        "id": "9f31330dd52e8896",
+        "type": "ui_gauge",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "9081a9acfb3d7fc9",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "ammonia",
+        "label": "PWM",
+        "format": "{{payload.NH3}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 900,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "d88b4809f72350b5",
+        "type": "ui_gauge",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "9081a9acfb3d7fc9",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "H2S",
+        "label": "PWM",
+        "format": "{{payload.H2S}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 890,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "c9f37fc22742f2a7",
+        "type": "ui_gauge",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "7be90e49826e3487",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Fan status",
+        "label": "PWM",
+        "format": "{{payload.FP}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 890,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "43629541653ae70e",
+        "type": "ui_slider",
+        "z": "0469a9e0eec0381a",
+        "name": "POWER:",
+        "label": "POWER:",
+        "tooltip": "",
+        "group": "7be90e49826e3487",
+        "order": 5,
+        "width": 5,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": "1",
+        "max": "255",
+        "step": "10",
+        "className": "",
+        "x": 60,
+        "y": 800,
+        "wires": [
+            [
+                "68f6ec0159057e42"
+            ]
+        ]
+    },
+    {
+        "id": "e37c9c0f78e292d6",
+        "type": "ui_button",
+        "z": "0469a9e0eec0381a",
+        "name": "EMERGENCIA STOP",
+        "group": "10ef77e77336bd2f",
+        "order": 9,
+        "width": "6",
+        "height": 1,
+        "passthru": false,
+        "label": "EMSTOP",
+        "tooltip": "EMERGENCY STOP",
+        "color": "#ffffff",
+        "bgcolor": "#ff0000",
+        "className": "",
+        "icon": "",
+        "payload": "EMSTOP",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 100,
+        "y": 860,
+        "wires": [
+            [
+                "8095d0e0df5e3b0d"
+            ]
+        ]
+    },
+    {
+        "id": "68f6ec0159057e42",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "POWER",
+        "func": "msg.payload = \"POWER:\" + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 800,
+        "wires": [
+            [
+                "730707d4cbac7944"
+            ]
+        ]
+    },
+    {
+        "id": "8095d0e0df5e3b0d",
+        "type": "change",
+        "z": "0469a9e0eec0381a",
+        "name": "EMSTOP",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "EMSTOP",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 320,
+        "y": 860,
+        "wires": [
+            [
+                "730707d4cbac7944"
+            ]
+        ]
+    },
+    {
+        "id": "730707d4cbac7944",
+        "type": "tcp request",
+        "z": "0469a9e0eec0381a",
+        "name": "Enviar a Arduino",
+        "server": "192.168.14.40",
+        "port": "1880",
+        "out": "sit",
+        "ret": "buffer",
+        "splitc": "100",
+        "newline": "",
+        "trim": false,
+        "tls": "",
+        "x": 480,
+        "y": 660,
+        "wires": [
+            [
+                "ded6fe4f2d571693"
+            ]
+        ]
+    },
+    {
+        "id": "ded6fe4f2d571693",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 650,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "50c5d7378355ab12",
+        "type": "ui_gauge",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "group": "10ef77e77336bd2f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature Inside",
+        "label": "PWM",
+        "format": "{{payload.T1}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1170,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "f44dfb1adfb38b23",
+        "type": "inject",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1190,
+        "y": 400,
+        "wires": [
+            [
+                "1a737179d530895c"
+            ]
+        ]
+    },
+    {
+        "id": "1a737179d530895c",
+        "type": "hostip",
+        "z": "0469a9e0eec0381a",
+        "name": "Host IP",
+        "x": 1380,
+        "y": 400,
+        "wires": [
+            [
+                "d707d9aacfea0332",
+                "c54ad659028cde62"
+            ]
+        ]
+    },
+    {
+        "id": "d707d9aacfea0332",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1590,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "c54ad659028cde62",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "parsear ipv4",
+        "func": "msg.ipv4 = msg.payload[3].address\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 500,
+        "wires": [
+            [
+                "6482362e74d5e02b",
+                "0053b066f503e28c"
+            ]
+        ]
+    },
+    {
+        "id": "6482362e74d5e02b",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1730,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "0053b066f503e28c",
+        "type": "ui_text",
+        "z": "0469a9e0eec0381a",
+        "group": "7be90e49826e3487",
+        "order": 9,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "Ipv4 address",
+        "format": "{{msg.ipv4}}/ui",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1910,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "7b5cb6fe1b59621e",
+        "type": "file",
+        "z": "0469a9e0eec0381a",
+        "name": "Guardar CSV local",
+        "filename": "/data/corrosion_log.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 1410,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "87402db330f51b54",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "INSERT PostgreSQL",
+        "func": "// ====== INSERT SIN PARÁMETROS – FUNCIONA CON postgrestor-next ======\nvar t0   = msg.payload.T0   || 0;\nvar h    = msg.payload.H    || 0;\nvar t1   = msg.payload.T1   || 0;\nvar nh3  = msg.payload.NH3  || 0;\nvar h2s  = msg.payload.H2S  || 0;\nvar fan  = msg.payload.FAN  || 0;\n\n// ¡¡SIN $1 NI ? NI NADA!! – VALORES DIRECTOS\nmsg.topic = \n  \"INSERT INTO corrosion_data (timestamp, temp0, hum, temp1, nh3_ppm, h2s_ppm, fan_speed) \" +\n  \"VALUES (NOW(), \" + t0 + \", \" + h + \", \" + t1 + \", \" + nh3 + \", \" + h2s + \", \" + fan + \")\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": "1",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 860,
+        "wires": [
+            [
+                "acc3000921b5b1ed"
+            ]
+        ]
+    },
+    {
+        "id": "e6d2c4e708ff2a69",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "Formato CSV",
+        "func": "var d = new Date();\nvar linea = d.toISOString() + \",\" +\n    msg.payload.T0 + \",\" +\n    msg.payload.H + \",\" +\n    msg.payload.T1 + \",\" +\n    (msg.payload.NH3 || 0) + \",\" +\n    (msg.payload.H2S || 0) + \",\" +\n    (msg.payload.FAN || 0);\nmsg.payload = linea;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 780,
+        "wires": [
+            [
+                "7b5cb6fe1b59621e"
+            ]
+        ]
+    },
+    {
+        "id": "03e20d0cc13167aa",
+        "type": "ui_button",
+        "z": "0469a9e0eec0381a",
+        "name": "Descargar CSV",
+        "group": "9081a9acfb3d7fc9",
+        "order": 10,
+        "width": "6",
+        "height": 1,
+        "passthru": true,
+        "label": "DESCARGAR CSV",
+        "tooltip": "",
+        "color": "white",
+        "bgcolor": "#d35400",
+        "className": "",
+        "icon": "download",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 1020,
+        "y": 940,
+        "wires": [
+            [
+                "201c2d73d74d6244"
+            ]
+        ]
+    },
+    {
+        "id": "821c9226fc2934b5",
+        "type": "function",
+        "z": "0469a9e0eec0381a",
+        "name": "CSV para descargar",
+        "func": "msg.payload = \"data:text/csv;charset=utf-8,\" + encodeURIComponent(msg.payload);\nmsg.filename = \"corrosion_\" + new Date().toISOString().slice(0,10) + \".csv\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 940,
+        "wires": [
+            [
+                "23b117180a6336e7"
+            ]
+        ]
+    },
+    {
+        "id": "23b117180a6336e7",
+        "type": "ui_template",
+        "z": "0469a9e0eec0381a",
+        "group": "9081a9acfb3d7fc9",
+        "name": "Descargar",
+        "order": 11,
+        "width": 0,
+        "height": 0,
+        "format": "<a id=\"dl\" style=\"display:none\"></a>\n<script>\n  scope.$watch('msg', function(msg) {\n    if (msg && msg.payload) {\n      var a = document.getElementById('dl');\n      a.href = msg.payload;\n      a.download = msg.filename;\n      a.click();\n    }\n  });\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1640,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6af9e0761b62c805",
+        "type": "ui_template",
+        "z": "0469a9e0eec0381a",
+        "group": "7be90e49826e3487",
+        "name": "Tabla en vivo",
+        "order": 1,
+        "width": "6",
+        "height": "3",
+        "format": "<table style=\"width:100%;text-align:center;\">\n  <tr style=\"background:#2c3e50;color:white;\">\n    <th>Hora</th><th>T0</th><th>H</th><th>T1</th><th>NH₃</th><th>H₂S</th><th>Fan</th>\n  </tr>\n  <tr>\n    <td>{{msg.timestamp}}</td>\n    <td>{{msg.payload.T0}}°C</td>\n    <td>{{msg.payload.H}}%</td>\n    <td>{{msg.payload.T1}}°C</td>\n    <td>{{msg.payload.NH3}} ppm</td>\n    <td>{{msg.payload.H2S}} ppm</td>\n    <td>{{msg.payload.FP}}%</td>\n  </tr>\n</table>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1410,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "201c2d73d74d6244",
+        "type": "file in",
+        "z": "0469a9e0eec0381a",
+        "name": "Leer CSV",
+        "filename": "/data/corrosion_log.csv",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "allProps": false,
+        "x": 1200,
+        "y": 940,
+        "wires": [
+            [
+                "821c9226fc2934b5"
+            ]
+        ]
+    },
+    {
+        "id": "2f40907fc60842d9",
+        "type": "debug",
+        "z": "0469a9e0eec0381a",
+        "name": "POSTGRES",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1620,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "acc3000921b5b1ed",
+        "type": "postgrestor",
+        "z": "0469a9e0eec0381a",
+        "name": "",
+        "query": "INSERT INTO corrosion_data (timestamp, temp0, hum, temp1, nh3_ppm, h2s_ppm, fan_speed) \nVALUES (NOW(), t0, h, t1, n3, h2s, fan)",
+        "postgresDB": "bd45827879cfb21e",
+        "output": false,
+        "outputs": 1,
+        "throwErrors": false,
+        "x": 1410,
+        "y": 860,
+        "wires": [
+            [
+                "2f40907fc60842d9"
+            ]
+        ]
+    },
+    {
+        "id": "c0ee948d4969bf7b",
+        "type": "ui_group",
+        "name": "Room conditions",
+        "tab": "df173edeac526079",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "10ef77e77336bd2f",
+        "type": "ui_group",
+        "name": "Camera Conditions",
+        "tab": "df173edeac526079",
+        "order": 2,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "9081a9acfb3d7fc9",
+        "type": "ui_group",
+        "name": "Corrosive conditions",
+        "tab": "df173edeac526079",
+        "order": 3,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7be90e49826e3487",
+        "type": "ui_group",
+        "name": "Control",
+        "tab": "df173edeac526079",
+        "order": 4,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "bd45827879cfb21e",
+        "type": "postgresDB",
+        "name": "postgres",
+        "throwErrors": true,
+        "throwErrorsFieldType": "bool",
+        "host": "127.0.0.1",
+        "hostFieldType": "str",
+        "port": 5432,
+        "portFieldType": "num",
+        "database": "corrosion",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "max": 10,
+        "maxFieldType": "num",
+        "min": 1,
+        "minFieldType": "num",
+        "idle": 1000,
+        "idleFieldType": "num",
+        "connectionTimeout": 10000,
+        "connectionTimeoutFieldType": "num",
+        "user": "postgres",
+        "userFieldType": "str",
+        "password": "Luis*001126",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "df173edeac526079",
+        "type": "ui_tab",
+        "name": "Advanced Corrosion",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "308caf1736358529",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-contrib-hostip": "0.0.3",
+            "node-red-contrib-postgrestor-next": "0.5.2"
+        }
+    }
+]

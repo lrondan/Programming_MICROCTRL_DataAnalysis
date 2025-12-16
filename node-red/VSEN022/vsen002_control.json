@@ -1,0 +1,1180 @@
+[
+    {
+        "id": "d3383667e5b94d69",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "20c858df7458e81b",
+        "type": "tcp request",
+        "z": "d3383667e5b94d69",
+        "name": "Conectar a Arduino",
+        "server": "192.168.14.38",
+        "port": "1880",
+        "out": "sit",
+        "ret": "string",
+        "splitc": "5000",
+        "newline": "",
+        "trim": false,
+        "tls": "",
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "d842755ebdb295f9",
+                "3d772727ba79d391"
+            ]
+        ]
+    },
+    {
+        "id": "5d0dfb9f06e36e35",
+        "type": "inject",
+        "z": "d3383667e5b94d69",
+        "name": "Iniciar conexión",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "20c858df7458e81b"
+            ]
+        ]
+    },
+    {
+        "id": "d842755ebdb295f9",
+        "type": "json",
+        "z": "d3383667e5b94d69",
+        "name": "Parsear",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 380,
+        "y": 120,
+        "wires": [
+            [
+                "3d772727ba79d391",
+                "28f8934007f91c5a",
+                "47c06ba07f77fa55",
+                "e58164cef2cea243",
+                "6bc040d271197f5c",
+                "4579e2a5619e8145",
+                "eedf194cdc9c160d",
+                "2ccee7e13924b7d2",
+                "0b394efc40d81aaa",
+                "83d3e30c69c924e8"
+            ]
+        ]
+    },
+    {
+        "id": "3d772727ba79d391",
+        "type": "debug",
+        "z": "d3383667e5b94d69",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 370,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "47c06ba07f77fa55",
+        "type": "ui_gauge",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "50c34fdfe5331458",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "TT2",
+        "label": "*C",
+        "format": "{{payload.T2}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#293d29",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 670,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "28f8934007f91c5a",
+        "type": "ui_gauge",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "50c34fdfe5331458",
+        "order": 1,
+        "width": 6,
+        "height": 5,
+        "gtype": "gage",
+        "title": "TT1",
+        "label": "*C",
+        "format": "{{payload.T1}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 670,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "7216c7cc7f26f91b",
+        "type": "ui_chart",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "bf44ad76b97325b8",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "T1 vs T2",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "No data...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "10000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#175582",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 940,
+        "y": 240,
+        "wires": [
+            []
+        ],
+        "inputLabels": [
+            "{{payload.t1}}"
+        ]
+    },
+    {
+        "id": "0f4ca30bc52cb744",
+        "type": "debug",
+        "z": "d3383667e5b94d69",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 930,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "e58164cef2cea243",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "temparature1",
+        "func": "msg.payload = msg.payload.T1 || msg.payload.temp1 || 0;\nmsg.topic = \"Temperature 1\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "0f4ca30bc52cb744",
+                "7216c7cc7f26f91b"
+            ]
+        ]
+    },
+    {
+        "id": "6bc040d271197f5c",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "temperature2",
+        "func": "msg.payload = msg.payload.T2 || msg.payload.temp2 || 1;\nmsg.topic = \"Temperature 2\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 300,
+        "wires": [
+            [
+                "0f4ca30bc52cb744",
+                "7216c7cc7f26f91b"
+            ]
+        ]
+    },
+    {
+        "id": "4579e2a5619e8145",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "setpoint",
+        "func": "msg.payload = msg.payload.SP || msg.payload.setpoint || 0;\nmsg.topic = \"SetPoint\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 380,
+        "wires": [
+            [
+                "7216c7cc7f26f91b"
+            ]
+        ]
+    },
+    {
+        "id": "eedf194cdc9c160d",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "flowrate",
+        "func": "msg.payload = msg.payload.F || msg.payload.flowrate1 || 0;\nmsg.topic = \"FlowRate\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 320,
+        "wires": [
+            [
+                "860df1db9296663a",
+                "ef2044f8951562e5"
+            ]
+        ]
+    },
+    {
+        "id": "860df1db9296663a",
+        "type": "debug",
+        "z": "d3383667e5b94d69",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "ef2044f8951562e5",
+        "type": "ui_chart",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "bf44ad76b97325b8",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "FlowRate",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "No data...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "20",
+        "removeOlder": 1,
+        "removeOlderPoints": "10000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#175582",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1120,
+        "y": 320,
+        "wires": [
+            []
+        ],
+        "inputLabels": [
+            "{{payload.t1}}"
+        ]
+    },
+    {
+        "id": "2ccee7e13924b7d2",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "heater",
+        "func": "msg.payload = msg.payload.H || msg.payload.heater || 0;\nmsg.topic = \"Heater\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 440,
+        "wires": [
+            [
+                "7ec765913c0d5739"
+            ]
+        ]
+    },
+    {
+        "id": "0b394efc40d81aaa",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "Cooler",
+        "func": "msg.payload = msg.payload.C || msg.payload.cooler || 0;\nmsg.topic = \"Cooler\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 500,
+        "wires": [
+            [
+                "575bbb1656f4a813"
+            ]
+        ]
+    },
+    {
+        "id": "83d3e30c69c924e8",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "Pump Status",
+        "func": "msg.payload = msg.payload.P || msg.payload.pump || 0;\nmsg.topic = \"Pump\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 580,
+        "wires": [
+            [
+                "e2f191b89f119390"
+            ]
+        ]
+    },
+    {
+        "id": "7ec765913c0d5739",
+        "type": "ui_gauge",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "bf63bc1bc039bc84",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Heater",
+        "label": "PWM",
+        "format": "{{payload.H}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1090,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "575bbb1656f4a813",
+        "type": "ui_gauge",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "bf63bc1bc039bc84",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Cooler",
+        "label": "PWM",
+        "format": "{{payload.C}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1090,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "setpoint",
+        "type": "ui_slider",
+        "z": "d3383667e5b94d69",
+        "name": "SetPoint",
+        "label": "SetPoint (°C)",
+        "tooltip": "",
+        "group": "229097588a259f36",
+        "order": 5,
+        "width": 5,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": "25",
+        "max": "90",
+        "step": "1",
+        "className": "",
+        "x": 140,
+        "y": 660,
+        "wires": [
+            [
+                "enviar_sp",
+                "53f862e306ceefe4"
+            ]
+        ]
+    },
+    {
+        "id": "kp",
+        "type": "ui_slider",
+        "z": "d3383667e5b94d69",
+        "name": "Kp",
+        "label": "Kp",
+        "tooltip": "",
+        "group": "229097588a259f36",
+        "order": 6,
+        "width": 5,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": "0",
+        "max": "100",
+        "step": "1",
+        "className": "",
+        "x": 130,
+        "y": 720,
+        "wires": [
+            [
+                "enviar_kp",
+                "74777a6a13ed7b23"
+            ]
+        ]
+    },
+    {
+        "id": "ki",
+        "type": "ui_slider",
+        "z": "d3383667e5b94d69",
+        "name": "Ki",
+        "label": "Ki",
+        "tooltip": "",
+        "group": "229097588a259f36",
+        "order": 7,
+        "width": 5,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": "0",
+        "max": "50",
+        "step": 0.1,
+        "className": "",
+        "x": 130,
+        "y": 760,
+        "wires": [
+            [
+                "enviar_ki",
+                "24b78c883d36414a"
+            ]
+        ]
+    },
+    {
+        "id": "kd",
+        "type": "ui_slider",
+        "z": "d3383667e5b94d69",
+        "name": "Kd",
+        "label": "Kd",
+        "tooltip": "",
+        "group": "229097588a259f36",
+        "order": 8,
+        "width": 5,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "topicType": "str",
+        "min": "0",
+        "max": "20",
+        "step": 0.1,
+        "className": "",
+        "x": 130,
+        "y": 800,
+        "wires": [
+            [
+                "enviar_kd",
+                "68340c7249cf7287"
+            ]
+        ]
+    },
+    {
+        "id": "emstop",
+        "type": "ui_button",
+        "z": "d3383667e5b94d69",
+        "name": "EMERGENCIA STOP",
+        "group": "229097588a259f36",
+        "order": 9,
+        "width": 5,
+        "height": 1,
+        "passthru": false,
+        "label": "EMSTOP",
+        "tooltip": "EMERGENCY STOP",
+        "color": "#ffffff",
+        "bgcolor": "#ff0000",
+        "className": "",
+        "icon": "",
+        "payload": "EMSTOP",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 160,
+        "y": 840,
+        "wires": [
+            [
+                "enviar_emstop"
+            ]
+        ]
+    },
+    {
+        "id": "enviar_sp",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "SETP:",
+        "func": "msg.payload = \"SETP:\" + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 660,
+        "wires": [
+            [
+                "tcp_out"
+            ]
+        ]
+    },
+    {
+        "id": "enviar_kp",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "KP:",
+        "func": "msg.payload = \"KP:\" + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 720,
+        "wires": [
+            [
+                "tcp_out"
+            ]
+        ]
+    },
+    {
+        "id": "enviar_ki",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "KI:",
+        "func": "msg.payload = \"KI:\" + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 760,
+        "wires": [
+            [
+                "tcp_out"
+            ]
+        ]
+    },
+    {
+        "id": "enviar_kd",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "KD:",
+        "func": "msg.payload = \"KD:\" + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 800,
+        "wires": [
+            [
+                "tcp_out"
+            ]
+        ]
+    },
+    {
+        "id": "enviar_emstop",
+        "type": "change",
+        "z": "d3383667e5b94d69",
+        "name": "EMSTOP",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "EMSTOP",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 840,
+        "wires": [
+            [
+                "tcp_out"
+            ]
+        ]
+    },
+    {
+        "id": "tcp_out",
+        "type": "tcp request",
+        "z": "d3383667e5b94d69",
+        "name": "Enviar a Arduino",
+        "server": "192.168.14.38",
+        "port": "1880",
+        "out": "sit",
+        "ret": "buffer",
+        "splitc": "100",
+        "newline": "",
+        "trim": false,
+        "tls": "",
+        "x": 540,
+        "y": 660,
+        "wires": [
+            [
+                "126d66d1ae46454e"
+            ]
+        ]
+    },
+    {
+        "id": "126d66d1ae46454e",
+        "type": "debug",
+        "z": "d3383667e5b94d69",
+        "name": "Ver datos",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 710,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "e2f191b89f119390",
+        "type": "ui_gauge",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "group": "bf63bc1bc039bc84",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Pump",
+        "label": "PWM",
+        "format": "{{payload.P}}",
+        "min": 0,
+        "max": "255",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1110,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "82a77b072b50a309",
+        "type": "telegram receiver",
+        "z": "d3383667e5b94d69",
+        "name": "Recibir comandos",
+        "bot": "telegram_bot",
+        "saveDataDir": "",
+        "inputs": 0,
+        "x": 230,
+        "y": 1040,
+        "wires": [
+            [
+                "8025600b1af8391a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8025600b1af8391a",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "Comandos Telegram",
+        "func": "var cmd = msg.payload.content.toUpperCase().trim();\n\nif (cmd === \"STATUS\") {\n    msg.payload = \"T1: \" + global.get(\"T1\") + \"°C\\n\" +\n                  \"T2: \" + global.get(\"T2\") + \"°C\\n\" +\n                  \"Flujo: \" + global.get(\"F\") + \" L/min\\n\" +\n                  \"SetPoint: \" + global.get(\"SP\") + \"°C\\n\" +\n                  \"Estado: \" + (global.get(\"H\") > 0 ? \"Calentando\" : \"Enfriando\");\n    return [msg, null];\n}\nelse if (cmd.startsWith(\"SETP:\")) {\n    var sp = parseFloat(cmd.split(\":\")[1]);\n    if (sp >= 20 && sp <= 90) {\n        msg.payload = \"SETP:\" + sp;\n        node.warn(\"Cambiando SetPoint a \" + sp);\n        return [null, msg];\n    }\n}\nelse if (cmd === \"EMSTOP\") {\n    msg.payload = \"EMSTOP\";\n    return [null, msg];\n}\nreturn null;",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 470,
+        "y": 1040,
+        "wires": [
+            [
+                "c72a624513ef02bd"
+            ],
+            [
+                "9ecf14ad59bb7c7e"
+            ]
+        ]
+    },
+    {
+        "id": "c72a624513ef02bd",
+        "type": "telegram sender",
+        "z": "d3383667e5b94d69",
+        "name": "Respuesta Telegram",
+        "bot": "telegram_bot",
+        "outputs": 1,
+        "x": 730,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9ecf14ad59bb7c7e",
+        "type": "tcp request",
+        "z": "d3383667e5b94d69",
+        "name": "Enviar al Arduino",
+        "server": "192.168.14.38",
+        "port": "1880",
+        "out": "sit",
+        "splitc": "100",
+        "x": 730,
+        "y": 1080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8813ccb77339adad",
+        "type": "tcp request",
+        "z": "d3383667e5b94d69",
+        "name": "Datos Arduino",
+        "server": "192.168.14.38",
+        "port": "1880",
+        "out": "time",
+        "splitc": "2000",
+        "x": 230,
+        "y": 1160,
+        "wires": [
+            [
+                "e3c67ae896719d96",
+                "e86447a0c8edc6d9"
+            ]
+        ]
+    },
+    {
+        "id": "e3c67ae896719d96",
+        "type": "json",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 430,
+        "y": 1160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e86447a0c8edc6d9",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "Guardar en global",
+        "func": "global.set(\"T1\", msg.payload.T1);\nglobal.set(\"T2\", msg.payload.T2);\nglobal.set(\"F\", msg.payload.F);\nglobal.set(\"SP\", msg.payload.SP);\nglobal.set(\"H\", msg.payload.H);\nglobal.set(\"C\", msg.payload.C);\nglobal.set(\"P\", msg.payload.P);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 1160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2aea1df24238120b",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "Alarma Telegram",
+        "func": "var temp = msg.payload.T1 || msg.payload.T2;\nif (temp > 80) {\n    msg.payload = \"⚠️ ALERTA TEMPERATURA ALTA: \" + temp + \"°C\";\n    return msg;\n}\nif (msg.payload.F < 1) {\n    msg.payload = \"⚠️ FLUJO BAJO: \" + msg.payload.F + \" L/min\";\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 430,
+        "y": 1260,
+        "wires": [
+            [
+                "c72a624513ef02bd"
+            ]
+        ]
+    },
+    {
+        "id": "53f862e306ceefe4",
+        "type": "ui_text",
+        "z": "d3383667e5b94d69",
+        "group": "229097588a259f36",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "SetPoint",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 360,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "74777a6a13ed7b23",
+        "type": "ui_text",
+        "z": "d3383667e5b94d69",
+        "group": "229097588a259f36",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Kp",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 350,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "24b78c883d36414a",
+        "type": "ui_text",
+        "z": "d3383667e5b94d69",
+        "group": "229097588a259f36",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Ki",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 350,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "68340c7249cf7287",
+        "type": "ui_text",
+        "z": "d3383667e5b94d69",
+        "group": "229097588a259f36",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Kd",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 350,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "8052a49ab15be268",
+        "type": "inject",
+        "z": "d3383667e5b94d69",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 990,
+        "y": 720,
+        "wires": [
+            [
+                "009c332ddd168b2b"
+            ]
+        ]
+    },
+    {
+        "id": "009c332ddd168b2b",
+        "type": "hostip",
+        "z": "d3383667e5b94d69",
+        "name": "Host IP",
+        "x": 1180,
+        "y": 720,
+        "wires": [
+            [
+                "b072193da78c6454",
+                "e7f6f78e814a1a3c"
+            ]
+        ]
+    },
+    {
+        "id": "b072193da78c6454",
+        "type": "debug",
+        "z": "d3383667e5b94d69",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "e7f6f78e814a1a3c",
+        "type": "function",
+        "z": "d3383667e5b94d69",
+        "name": "parsear ipv4",
+        "func": "msg.ipv4 = msg.payload[3].address\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 820,
+        "wires": [
+            [
+                "6ab118cd83e560fe",
+                "a550f8a01e5d7883"
+            ]
+        ]
+    },
+    {
+        "id": "6ab118cd83e560fe",
+        "type": "debug",
+        "z": "d3383667e5b94d69",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "a550f8a01e5d7883",
+        "type": "ui_text",
+        "z": "d3383667e5b94d69",
+        "group": "229097588a259f36",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Ipv4 address",
+        "format": "{{msg.ipv4}}/ui",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1710,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "50c34fdfe5331458",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "ccce469b06460940",
+        "order": 2,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "bf44ad76b97325b8",
+        "type": "ui_group",
+        "name": "Charts",
+        "tab": "ccce469b06460940",
+        "order": 3,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "bf63bc1bc039bc84",
+        "type": "ui_group",
+        "name": "Status",
+        "tab": "ccce469b06460940",
+        "order": 4,
+        "disp": true,
+        "width": "4",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "229097588a259f36",
+        "type": "ui_group",
+        "name": "Control",
+        "tab": "ccce469b06460940",
+        "order": 1,
+        "disp": true,
+        "width": 5,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ccce469b06460940",
+        "type": "ui_tab",
+        "name": "VSEN002 - Process Trainer Control",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "70dd1aa2c2f29ba6",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-contrib-telegrambot": "17.0.3",
+            "node-red-contrib-hostip": "0.0.3"
+        }
+    }
+]
