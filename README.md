@@ -1,7 +1,7 @@
-# 💻 Programming Exercises and Solved Problems — C, C++ & Arduino
+# 💻 Programming Exercises and Solved Problems — C, C++, Arduino and Python
 
 Welcome to this repository! 🎯  
-Here you'll find a collection of **programming exercises, solved problems, and practical projects** developed using **C**, **C++**, and **Arduino**.  
+Here you'll find a collection of **programming exercises, solved problems, and practical projects** developed using **C**, **C++**, **Python**, and **Arduino**.  
 The goal of this repository is to help students and beginners strengthen their **logic, algorithm design**, and **hardware programming** skills through clear and well-commented examples.
 
 ## 🧠 Topics Covered
@@ -22,7 +22,13 @@ The goal of this repository is to help students and beginners strengthen their *
 - Sensor data acquisition (temperature, flow, etc.)  
 - Actuator and motor control using PWM and TRIACs  
 - PID control applications  
-- Communication between Arduino and Python  
+- Communication between Arduino and Python
+
+## 🔹**Data Analysis**
+- Working whit DataFrames
+- DataMinning algorithms
+- Working with different files formats {.csv .xls .xml .sqlite .db .json}
+- Working with pandas, numpy, sklear, matplotlib, seaborn.
 
 ---
 
@@ -30,11 +36,11 @@ The goal of this repository is to help students and beginners strengthen their *
 
 To compile and run these programs, you need:
 
-### 🖥️ **For C/C++**
+### 🖥️ **For C/C++ Python**
 - GCC or G++ compiler  
 - Any IDE (Code::Blocks, Dev-C++, Visual Studio Code, etc.)
 
 Compile using the terminal:
 ```bash
-gcc program.c -o program
+python -m create venv [venv_name]
 ./program
